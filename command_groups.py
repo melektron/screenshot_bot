@@ -27,10 +27,10 @@ class Make(apc.Group):
         if not file_name.lower().endswith(".png"):
             file_name += ".png"
 
-        await interaction.response.send_message("Just a moment...")
+        #await interaction.response.send_message("Just a moment...")
 
         file_path = image_capture.take_picture() #"countries.png"
         # await interaction.response.send_message(f"making screenshot... ({file_name})")
         file = discord.File(fp=f"{file_path}")
-        await interaction.followup.send_message(f"Her ya go!", file=file)
+        await interaction.response.send_message(f"Her ya go!", file=file)
         os.system(f"rm {file}")
