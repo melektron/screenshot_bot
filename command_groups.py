@@ -31,3 +31,4 @@ class Make(apc.Group):
         # await interaction.response.send_message(f"making screenshot... ({file_name})")
         file = discord.File(fp=f"{file_path}")
         await interaction.response.send_message(f"Her ya go!", file=file)
+        os.system(f"rm {file}")
