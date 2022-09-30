@@ -3,6 +3,7 @@
 from discord import app_commands as apc
 import discord
 import os
+import image_capture
 
 
 class Make(apc.Group):
@@ -26,7 +27,7 @@ class Make(apc.Group):
         if not file_name.lower().endswith(".png"):
             file_name += ".png"
 
-        file_name = "countries.png"
+        file_path = image_capture.take_picture() #"countries.png"
         # await interaction.response.send_message(f"making screenshot... ({file_name})")
-        file = discord.File(fp=f"./{file_name}")
+        file = discord.File(fp=f"{file_path}")
         await interaction.response.send_message(f"Her ya go!", file=file)
