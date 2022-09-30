@@ -4,7 +4,10 @@ from discord import app_commands as apc
 import discord
 import os
 import image_capture
+from dotenv import dotenv_values
 
+
+CONFIG = dotenv_values("./.env")
 
 class Make(apc.Group):
     """Manage general commands"""
@@ -32,5 +35,5 @@ class Make(apc.Group):
         file_path = image_capture.take_picture() #"countries.png"
         # await interaction.response.send_message(f"making screenshot... ({file_name})")
         file = discord.File(fp=f"{file_path}")
-        await interaction.response.edit_message(f"Her ya go!", file=file)
+        await this.bot.get_channel(CONFIG["CH_ID"]).send(f"Her ya go!", file=file)
         os.system(f"rm {file}")
