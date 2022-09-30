@@ -35,5 +35,5 @@ class Make(apc.Group):
         file_path = image_capture.take_picture() #"countries.png"
         # await interaction.response.send_message(f"making screenshot... ({file_name})")
         file = discord.File(fp=f"{file_path}")
-        await self.bot.get_channel(CONFIG["CH_ID"]).send(f"Her ya go!", file=file)
+        await self.bot.get_channel(int(CONFIG["CH_ID"])).send(f"Her ya go!", file=file)
         os.system(f"rm {file}")
