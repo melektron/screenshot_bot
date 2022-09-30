@@ -23,3 +23,6 @@ def take_picture(x=1920, y=1080, format="yuyv422", file="/tmp/out1.png") -> str:
     cv2.imwrite(file, image)
     #os.system(f"ffmpeg -f v4l2 -video_size {x}x{y} -input_format {format} -i /dev/video{DEVICE_ID} -frames 1 {file}")
     return file
+
+# take one picture and remove it again to prime the pipeling
+os.system(f"rm {take_picture()}")
