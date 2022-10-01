@@ -20,12 +20,11 @@ class Make(apc.Group):
     async def screenshot(self, interaction: discord.Interaction, file_name: str = "ss1.png"):
         file_name = file_name.strip().replace(" ", "")
 
-        # if image exists, delete it
-        if os.path.isfile(f"./{file_name}"):
-            os.remove(f"./{file_name}")
+        if not os.path.isdir("./captures"):
+            os.mkdir("./captures")
+        if not os.path.isfile(f"./captures/{file_name}"):
+            image_capture.take_picture(file="./captures/" + file_name)
 
-        await interaction.response.send_message("Just a moment...")
-
-        image_capture.take_picture(file="./" + file_name)
-        file = discord.File(fp=f"./{file_name}")
+        await interaction.response.send_message("Uploading...")
+        file = discord.File(fp=f"./captures/{file_name}")
         await interaction.channel.send("Her ya go!", file=file)
