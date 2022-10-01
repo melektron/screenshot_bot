@@ -31,7 +31,7 @@ class Make(apc.Group):
         await interaction.channel.send("Her ya go!", file=file)
     
     @apc.command()
-    async def load(self, interaction: discord.Interaction, file_path = "./ss1.jpg"):
+    async def load(self, interaction: discord.Interaction, file_path: str = "./ss1.jpg"):
         file_name = file_path.strip().replace(" ", "_")
 
         await interaction.response.send_message("Uploading...")
