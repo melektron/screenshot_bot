@@ -27,9 +27,9 @@ class Make(apc.Group):
             await interaction.response.send_message("@ERROR: duplicate file path, not saving image!")
             return
         
-        interaction.response.send_message("Taking picture...")
-        image_capture.take_picture(file="./captures/" + file_name)
-        await interaction.response.send_message("Uploading...")
+        await interaction.response.send_message("Taking picture...")
+        await image_capture.take_picture(file="./captures/" + file_name)
+        await interaction.channel.send("Uploading...")
         file = discord.File(fp=f"./captures/{file_name}")
         await interaction.channel.send("Her ya go!", file=file)
     

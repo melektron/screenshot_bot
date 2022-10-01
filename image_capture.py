@@ -13,8 +13,6 @@ import asyncio
 
 DEVICE_ID = 0
 
-asyncio.create_subprocess_exec()
-
 
 async def take_picture(x=1920, y=1080, format="yuyv422", file="./new.png") -> str:
     #shutil.copy("./new.png", file)
@@ -23,7 +21,7 @@ async def take_picture(x=1920, y=1080, format="yuyv422", file="./new.png") -> st
     # run ffmpeg in an async subprocess
     process = await asyncio.create_subprocess_exec(
         "ffmpeg", 
-        "-f", "v2l2", 
+        "-f", "v4l2", 
         "-video_size", f"{x}x{y}",
         "-input_format", format,
         "-i", f"/dev/video{DEVICE_ID}",
