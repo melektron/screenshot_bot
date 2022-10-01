@@ -18,14 +18,17 @@ class Make(apc.Group):
         self.bot = bot
 
     @apc.command()
-    async def screenshot(self, interaction: discord.Interaction, image_name: str = "ss1", image_type: str = "png"):
+    async def screenshot(self, interaction: discord.Interaction, image_name: str = "ss", image_type: str = "png"):
         file_name = image_name.strip().replace(" ", "_") + time.strftime("_%Y%m%d-%H%M%S.") + image_type
 
         if not os.path.isdir("./captures"):
             os.mkdir("./captures")
-        if not os.path.isfile(f"./captures/{file_name}"):
-            image_capture.take_picture(file="./captures/" + file_name)
-
+        if os.path.isfile(f"./captures/{file_name}"):
+            await interaction.response.send_message("@ERROR: duplicate file path, not saving image!")
+            return
+        
+        interaction.response.send_message("Taking picture...")
+        image_capture.take_picture(file="./captures/" + file_name)
         await interaction.response.send_message("Uploading...")
         file = discord.File(fp=f"./captures/{file_name}")
         await interaction.channel.send("Her ya go!", file=file)
