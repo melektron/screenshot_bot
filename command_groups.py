@@ -5,6 +5,7 @@ from discord.ext import commands as cmds
 import discord
 import os
 import image_capture
+import time
 from dotenv import dotenv_values
 
 
@@ -17,8 +18,8 @@ class Make(apc.Group):
         self.bot = bot
 
     @apc.command()
-    async def screenshot(self, interaction: discord.Interaction, file_name: str = "ss1.png"):
-        file_name = file_name.strip().replace(" ", "")
+    async def screenshot(self, interaction: discord.Interaction, image_name: str = "ss1", image_type: str = "png"):
+        file_name = image_name.strip().replace(" ", "_") + time.strftime("_%Y%m%d-%H%M%S.") + image_type
 
         if not os.path.isdir("./captures"):
             os.mkdir("./captures")
