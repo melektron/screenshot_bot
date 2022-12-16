@@ -1,7 +1,7 @@
 """
 To make screenshots of our projector
 
-Author: Nilusink
+Authors: Nilusink & melektron
 """
 from discord.ext import commands as cmds
 from traceback import format_exc
@@ -9,9 +9,11 @@ from dotenv import dotenv_values
 import subprocess
 import discord
 import time
+import os
 
 # local imports
 import command_groups
+import image_capture
 
 
 # load dotenv
@@ -56,6 +58,34 @@ async def ip(ctx: cmds.Context):
     except Exception:
         print("Error getting ip: ", format_exc())
         raise
+
+@bot.command(name="capture")
+async def capture(ctx: cmds.Context):
+    image_name: str = ctx.args[0] if len(ctx.args) > 0 else "ss"
+    image_type: str = ctx.args[1] if len(ctx.args) > 1 else "png"
+    file_name = image_name.strip().replace(" ", "_") + time.strftime("_%Y%m%d-%H%M%S.") + image_type
+
+    if not os.path.isdir("./captures"):
+        os.mkdir("./captures")
+    if os.path.isfile(f"./captures/{file_name}"):
+        await ctx.interaction.channel.send_message("@ERROR: duplicate file path, not saving image!")
+        return
+    
+    await ctx.interaction.channel.send_message("Taking picture...")
+    await image_capture.take_picture(file="./captures/" + file_name)
+        
+    if not os.path.isfile(f"./captures/{file_name}"):
+        await ctx.interaction.channel.send_message("@ERROR: could not find file, saving failed!")
+        return
+
+    if os.path.getsize(f"./captures/{file_name}") < 10:
+        await ctx.interaction.channel.send_message("@ERROR: file size is too small, saving failed!")
+        return
+    
+    await ctx.interaction.channel.send_message(f"Saved picture under './captures/{file_name}' ({os.path.getsize('./captures/' + file_name)} bytes)")
+    await ctx.interaction.channel.send("Uploading...")
+    file = discord.File(fp=f"./captures/{file_name}")
+    await ctx.interaction.channel.send("Her ya go!", file=file)
 
 
 @bot.event
