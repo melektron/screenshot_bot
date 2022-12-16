@@ -31,14 +31,14 @@ class Make(apc.Group):
         await image_capture.take_picture(file="./captures/" + file_name)
         
         if not os.path.isfile(f"./captures/{file_name}"):
-            await interaction.response.send_message("@ERROR: could not find file, saving failed!")
+            await interaction.channel.send("@ERROR: could not find file, saving failed!")
             return
 
         if os.path.getsize(f"./captures/{file_name}") < 10:
-            await interaction.response.send_message("@ERROR: file size is too small, saving failed!")
+            await interaction.channel.send("@ERROR: file size is too small, saving failed!")
             return
         
-        await interaction.response.send_message(f"Saved picture under './captures/{file_name}' ({os.path.getsize('./captures/' + file_name)} bytes)")
+        await interaction.channel.send(f"Saved picture under './captures/{file_name}' ({os.path.getsize('./captures/' + file_name)} bytes)")
         await interaction.channel.send("Uploading...")
         file = discord.File(fp=f"./captures/{file_name}")
         await interaction.channel.send("Her ya go!", file=file)

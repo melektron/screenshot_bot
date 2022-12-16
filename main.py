@@ -68,21 +68,21 @@ async def capture(ctx: cmds.Context):
     if not os.path.isdir("./captures"):
         os.mkdir("./captures")
     if os.path.isfile(f"./captures/{file_name}"):
-        await ctx.interaction.channel.send_message("@ERROR: duplicate file path, not saving image!")
+        await ctx.interaction.channel.send("@ERROR: duplicate file path, not saving image!")
         return
     
-    await ctx.interaction.channel.send_message("Taking picture...")
+    await ctx.interaction.channel.send("Taking picture...")
     await image_capture.take_picture(file="./captures/" + file_name)
         
     if not os.path.isfile(f"./captures/{file_name}"):
-        await ctx.interaction.channel.send_message("@ERROR: could not find file, saving failed!")
+        await ctx.interaction.channel.send("@ERROR: could not find file, saving failed!")
         return
 
     if os.path.getsize(f"./captures/{file_name}") < 10:
-        await ctx.interaction.channel.send_message("@ERROR: file size is too small, saving failed!")
+        await ctx.interaction.channel.send("@ERROR: file size is too small, saving failed!")
         return
     
-    await ctx.interaction.channel.send_message(f"Saved picture under './captures/{file_name}' ({os.path.getsize('./captures/' + file_name)} bytes)")
+    await ctx.interaction.channel.send(f"Saved picture under './captures/{file_name}' ({os.path.getsize('./captures/' + file_name)} bytes)")
     await ctx.interaction.channel.send("Uploading...")
     file = discord.File(fp=f"./captures/{file_name}")
     await ctx.interaction.channel.send("Her ya go!", file=file)
