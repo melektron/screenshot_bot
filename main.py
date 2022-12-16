@@ -60,9 +60,7 @@ async def ip(ctx: cmds.Context):
         raise
 
 @bot.command(name="capture")
-async def capture(ctx: cmds.Context):
-    image_name: str = ctx.args[0] if len(ctx.args) > 0 else "ss"
-    image_type: str = ctx.args[1] if len(ctx.args) > 1 else "png"
+async def capture(ctx: cmds.Context, image_name="ss", image_type="png"):
     file_name = image_name.strip().replace(" ", "_") + time.strftime("_%Y%m%d-%H%M%S.") + image_type
 
     if not os.path.isdir("./captures"):
