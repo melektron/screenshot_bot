@@ -12,11 +12,11 @@ with open("/home/melektron/cap_vres", "r") as f:
     vres = int(f.read())
     
 # capture a frame. 1 frame is skipped as that first one is probably incomplete. after that, everything works fine.
-os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-skip=1 --stream-to=/home/melektron/Documents/screenshot_bot_install/testimg")
+os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-skip=1 --stream-to=./testimg")
 
 # read raw frame bytes
 data: bytes = None
-with open("/home/melektron/Documents/screenshot_bot_install/testimg", "rb") as f:
+with open("./testimg", "rb") as f:
     data = f.read()
 bytes_per_pixel = len(data) // (hres * vres)
 print(f"Resolution: {hres}x{vres}, {bytes_per_pixel} bytes per pixel")
@@ -28,4 +28,4 @@ print(picture_array.shape)
 
 # save
 img = Image.fromarray(picture_array)
-img.save("/home/melektron/Documents/screenshot_bot_install/testimg.png")
+img.save("./testimg.png")
