@@ -156,6 +156,9 @@ gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width
 
 ```
 
+
+
+
 # Links
 
 - Tried to stream with gstreamer between raspberry pis (doesn't seem to work for me) https://forums.raspberrypi.com/viewtopic.php?t=307790
