@@ -19,3 +19,5 @@ This folder focuses on using Raspberry Pi 2 Model B for HDMI capture via CSI.
   - gstreamer1.0-plugins-bad
   - gstreamer1.0-plugins-ugly
   - gstreamer1.0-plugins-rtp
+  - python3-numpy
+  - python3-pil
