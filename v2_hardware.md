@@ -81,3 +81,4 @@ sudo apt install gstreamer1.0-tools gstreamer
 
 - Tried to stream with gstreamer between raspberry pis (doesn't seem to work for me) https://forums.raspberrypi.com/viewtopic.php?t=307790
 
+- More EDIDs: https://github.com/6by9/CSI2_device_config/tree/master
