@@ -71,11 +71,90 @@ Important to get this far in the first place is to add both the dtoverlay and cm
 gst-launch-1.0 v4l2src ! video/x-raw-yuv,width=128,height=96,format='(fourcc)'UYVY ! videoconvert ! ffenc_h263 ! video/x-h263 ! rtph263ppay pt=96 ! udpsink host=192.168.1.1 port=5000 sync=false
 
 
+## camsetup script
+
+I made this script to more easily perform the setup options for Pi 5 as described in the Forum post for TC35... (still not quite working with gstreamer).
+
+Script:
+
+```bash
+DEVPATH=$(realpath $1)
+EDIDFILE=$(realpath $2)
+echo $DEVPATH
+echo $EDIDFILE
+
+# get resolultion from edid file (extract last line)
+RESSTR=$(edid-decode --native-resolution $EDIDFILE | tail -n 1 | xargs)
+# split at x
+IFS="x"
+read -a RESARR <<< "$RESSTR"
+# get hres and vres
+HRES=${RESARR[0]}
+VRES=${RESARR[1]}
+
+echo $HRES
+echo $VRES
+# save dimensions to file so other scripts can use them
+echo $HRES > ~/cap_hres
+echo $VRES > ~/cap_vres
+
+# set EDID on chip
+v4l2-ctl -d $DEVPATH --set-edid=file=$EDIDFILE
+v4l2-ctl -d $DEVPATH --set-dv-bt-timings query
+# reset links
+media-ctl -d /dev/media0 -r
+# set formats
+media-ctl -d /dev/media0 -l ''\''csi2'\'':4 -> '\''rp1-cfe-csi2_ch0'\'':0 [1]'
+media-ctl -d /dev/media0 -V ''\''csi2'\'':0 [fmt:RGB888_1X24/'"$HRES"'x'"$VRES"' field:none colorspace:srgb]'
+media-ctl -d /dev/media0 -V ''\''csi2'\'':4 [fmt:RGB888_1X24/'"$HRES"'x'"$VRES"' field:none colorspace:srgb]'
+v4l2-ctl -v width=$HRES,height=$VRES,pixelformat=RGB3
+```
+
+Usage:
+
+```bash
+# first param: subdevice to configure
+# second param: edid to load. The resolution config used is the primary resolution in the edid (or the last printed if there are multiple)
+bash camsetup.bash /dev/v4l-subdev2 TC358743-Driver/1080p30edid
+```
+
+## Command Collection
+
+
 ```bash
 sudo apt install gstreamer1.0-tools gstreamer
 ```
 
+Visualize media device tree:
 
+```bash
+sudo apt install graphviz # only once
+
+media-ctl --print-dot > config.dot
+dot -Tpng config.dot -o config.png
+```
+
+
+Test if frame reading works:
+
+```bash
+v4l2-ctl --stream-mmap=3 --stream-count=100 --stream-to=/dev/null # e.g. 100 Frames
+```
+
+Query current source timings (shows resolution, ...):
+
+```bash
+v4l2-ctl -d /dev/v4l-subdev2 --query-dv-timings # subdev might be different number if other stuff is connected, see above visualization
+```
+
+Various gstreamer attempts:
+
+```bash
+gst-launch-1.0 v4l2src ! video/x-raw, width=1920, height=1080, framerate=30/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=192.168.1.32 port=5200
+
+gst-launch-1.0 -v v4l2src device=/dev/video0 num-buffers=-1 ! video/x-raw, width=1920, height=1080, framerate=30/1 ! videoconvert ! jpegenc ! rtpjpegpay ! udpsink host=192.168.1.32 port=5200
+
+```
 
 # Links
 
