@@ -1,0 +1,26 @@
+digraph board {
+	rankdir=TB
+	n00000001 [label="{{<port0> 0 | <port1> 1 | <port2> 2 | <port3> 3} | csi2\n/dev/v4l-subdev0 | {<port4> 4 | <port5> 5 | <port6> 6 | <port7> 7}}", shape=Mrecord, style=filled, fillcolor=green]
+	n00000001:port4 -> n00000012
+	n00000001:port4 -> n0000000a:port0 [style=dashed]
+	n00000001:port5 -> n00000016 [style=dashed]
+	n00000001:port6 -> n0000001a [style=dashed]
+	n00000001:port6 -> n0000000a:port0 [style=dashed]
+	n00000001:port7 -> n0000001e [style=dashed]
+	n00000001:port7 -> n0000000a:port0 [style=dashed]
+	n0000000a [label="{{<port0> 0 | <port1> 1} | pisp-fe\n/dev/v4l-subdev1 | {<port2> 2 | <port3> 3 | <port4> 4}}", shape=Mrecord, style=filled, fillcolor=green]
+	n0000000a:port2 -> n00000022 [style=dashed]
+	n0000000a:port3 -> n00000026 [style=dashed]
+	n0000000a:port4 -> n0000002a [style=dashed]
+	n00000010 [label="{{} | tc358743 4-000f\n/dev/v4l-subdev2 | {<port0> 0}}", shape=Mrecord, style=filled, fillcolor=green]
+	n00000010:port0 -> n00000001:port0 [style=bold]
+	n00000012 [label="rp1-cfe-csi2_ch0\n/dev/video0", shape=box, style=filled, fillcolor=yellow]
+	n00000016 [label="rp1-cfe-embedded\n/dev/video1", shape=box, style=filled, fillcolor=yellow]
+	n0000001a [label="rp1-cfe-csi2_ch2\n/dev/video2", shape=box, style=filled, fillcolor=yellow]
+	n0000001e [label="rp1-cfe-csi2_ch3\n/dev/video3", shape=box, style=filled, fillcolor=yellow]
+	n00000022 [label="rp1-cfe-fe_image0\n/dev/video4", shape=box, style=filled, fillcolor=yellow]
+	n00000026 [label="rp1-cfe-fe_image1\n/dev/video5", shape=box, style=filled, fillcolor=yellow]
+	n0000002a [label="rp1-cfe-fe_stats\n/dev/video6", shape=box, style=filled, fillcolor=yellow]
+	n0000002e [label="rp1-cfe-fe_config\n/dev/video7", shape=box, style=filled, fillcolor=yellow]
+	n0000002e -> n0000000a:port1 [style=dashed]
+}

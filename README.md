@@ -1,3 +1,7 @@
+# Warning
+
+You are looking at the version 2 development branch. The goal of this is to create a new version of the bot with new hardware and a better, more reliable (possibly multi-step) software stack. This is not complete and functional jet.
+
 # ScreenShot Bot
 
 A simple discord bot enabeling the user to take screenshots of any HDMI display intercepted by a USB capture card or webcam.
